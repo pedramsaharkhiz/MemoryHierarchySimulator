@@ -1,0 +1,177 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:MemoryHierarchySimulator.ViewModels"
+        xmlns:lvc="using:LiveChartsCore.SkiaSharpView.Avalonia"
+        x:Class="MemoryHierarchySimulator.Views.MainWindow"
+        Title="شبیه‌ساز سلسله مراتب حافظه" Width="1300" Height="850"
+        WindowStartupLocation="CenterScreen">
+    <Window.DataContext><vm:MainViewModel/></Window.DataContext>
+    
+    <Grid Margin="20" ColumnDefinitions="340,*">
+        <!-- Settings Panel -->
+        <ScrollViewer Grid.Column="0">
+            <StackPanel Spacing="10">
+                <TextBlock Text="تنظیمات شبیه‌سازی" FontSize="22" FontWeight="Bold" Margin="0,0,0,4"/>
+                
+                <!-- L1 Cache -->
+                <Border Background="#F5F5F5" CornerRadius="10" Padding="12">
+                    <StackPanel Spacing="8">
+                        <CheckBox IsChecked="{Binding L1Enabled}" Content="کش L1"/>
+                        <Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto" IsEnabled="{Binding L1Enabled}">
+                            <StackPanel Grid.Row="0" Grid.Column="0" Margin="0,0,5,5">
+                                <TextBlock Text="اندازه (KB)"/><TextBox Text="{Binding L1Size}"/>
+                            </StackPanel>
+                            <StackPanel Grid.Row="0" Grid.Column="1" Margin="5,0,0,5">
+                                <TextBlock Text="بلوک (B)"/><TextBox Text="{Binding L1BlockSize}"/>
+                            </StackPanel>
+                            <StackPanel Grid.Row="1" Grid.Column="0" Margin="0,0,5,0">
+                                <TextBlock Text="Assoc"/><TextBox Text="{Binding L1Assoc}"/>
+                            </StackPanel>
+                            <StackPanel Grid.Row="1" Grid.Column="1" Margin="5,0,0,0">
+                                <TextBlock Text="تأخیر"/><TextBox Text="{Binding L1Latency}"/>
+                            </StackPanel>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+                
+                <!-- L2 Cache -->
+                <Border Background="#F5F5F5" CornerRadius="10" Padding="12">
+                    <StackPanel Spacing="8">
+                        <CheckBox IsChecked="{Binding L2Enabled}" Content="کش L2"/>
+                        <Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto" IsEnabled="{Binding L2Enabled}">
+                            <StackPanel Grid.Row="0" Grid.Column="0" Margin="0,0,5,5">
+                                <TextBlock Text="اندازه (KB)"/><TextBox Text="{Binding L2Size}"/>
+                            </StackPanel>
+                            <StackPanel Grid.Row="0" Grid.Column="1" Margin="5,0,0,5">
+                                <TextBlock Text="بلوک (B)"/><TextBox Text="{Binding L2BlockSize}"/>
+                            </StackPanel>
+                            <StackPanel Grid.Row="1" Grid.Column="0" Margin="0,0,5,0">
+                                <TextBlock Text="Assoc"/><TextBox Text="{Binding L2Assoc}"/>
+                            </StackPanel>
+                            <StackPanel Grid.Row="1" Grid.Column="1" Margin="5,0,0,0">
+                                <TextBlock Text="تأخیر"/><TextBox Text="{Binding L2Latency}"/>
+                            </StackPanel>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+                
+                <!-- L3 Cache -->
+                <Border Background="#F5F5F5" CornerRadius="10" Padding="12">
+                    <StackPanel Spacing="8">
+                        <CheckBox IsChecked="{Binding L3Enabled}" Content="کش L3"/>
+                        <Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto" IsEnabled="{Binding L3Enabled}">
+                            <StackPanel Grid.Row="0" Grid.Column="0" Margin="0,0,5,5">
+                                <TextBlock Text="اندازه (KB)"/><TextBox Text="{Binding L3Size}"/>
+                            </StackPanel>
+                            <StackPanel Grid.Row="0" Grid.Column="1" Margin="5,0,0,5">
+                                <TextBlock Text="بلوک (B)"/><TextBox Text="{Binding L3BlockSize}"/>
+                            </StackPanel>
+                            <StackPanel Grid.Row="1" Grid.Column="0" Margin="0,0,5,0">
+                                <TextBlock Text="Assoc"/><TextBox Text="{Binding L3Assoc}"/>
+                            </StackPanel>
+                            <StackPanel Grid.Row="1" Grid.Column="1" Margin="5,0,0,0">
+                                <TextBlock Text="تأخیر"/><TextBox Text="{Binding L3Latency}"/>
+                            </StackPanel>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+                
+                <!-- Simulation Settings -->
+                <Border Background="#E3F2FD" CornerRadius="10" Padding="12">
+                    <StackPanel Spacing="8">
+                        <TextBlock Text="تنظیمات شبیه‌سازی" FontWeight="SemiBold"/>
+                        <TextBlock Text="سیاست جایگزینی"/>
+                        <ComboBox ItemsSource="{Binding Policies}" SelectedIndex="{Binding SelectedPolicyIndex}" HorizontalAlignment="Stretch" Margin="0,2,0,0"/>
+                        <TextBlock Text="الگوی دسترسی"/>
+                        <ComboBox ItemsSource="{Binding Patterns}" SelectedIndex="{Binding SelectedPatternIndex}" HorizontalAlignment="Stretch" Margin="0,2,0,0"/>
+                        <TextBlock Text="تعداد دسترسی"/>
+                        <TextBox Text="{Binding AccessCount}" Margin="0,2,0,0"/>
+                        <TextBlock Text="تأخیر RAM"/>
+                        <TextBox Text="{Binding RamLatency}" Margin="0,2,0,0"/>
+                    </StackPanel>
+                </Border>
+                
+                <!-- Buttons -->
+                <StackPanel Orientation="Horizontal" Spacing="8">
+                    <Button Content="▶ اجرا" Command="{Binding RunCommand}" IsEnabled="{Binding !IsRunning}"
+                            Background="#FF6B35" Foreground="White" HorizontalAlignment="Stretch" Padding="10,8" MinWidth="90"/>
+                    <Button Content="📊 مقایسه" Command="{Binding CompareCommand}" IsEnabled="{Binding !IsRunning}"
+                            Background="#1E3A5F" Foreground="White" HorizontalAlignment="Stretch" Padding="10,8" MinWidth="110"/>
+                    <Button Content="🔄 ریست" Command="{Binding ResetCommand}"
+                            Background="#666" Foreground="White" HorizontalAlignment="Stretch" Padding="10,8" MinWidth="80"/>
+                </StackPanel>
+            </StackPanel>
+        </ScrollViewer>
+        
+        <!-- Results Panel -->
+        <Grid Grid.Column="1" Margin="20,0,0,0" RowDefinitions="Auto,*">
+            <!-- Status -->
+            <Border Grid.Row="0" Background="White" CornerRadius="10" Padding="15" Margin="0,0,0,10">
+                <StackPanel Spacing="8">
+                    <TextBlock Text="{Binding Status}" FontWeight="SemiBold"/>
+                    <ProgressBar Value="{Binding Progress}" Maximum="100" Height="6"/>
+                </StackPanel>
+            </Border>
+            
+            <!-- Tabs -->
+            <TabControl Grid.Row="1">
+                <TabItem Header="📈 نتایج">
+                    <Grid RowDefinitions="Auto,*">
+                        <!-- Stats Cards -->
+                        <Grid Grid.Row="0" ColumnDefinitions="*,*,*,*" Margin="0,0,0,10">
+                            <Border Grid.Column="0" Background="#E3F2FD" CornerRadius="10" Padding="15" Margin="0,0,5,0">
+                                <StackPanel><TextBlock Text="کل Hit" Foreground="#666"/><TextBlock Text="{Binding TotalHits}" FontSize="22" FontWeight="Bold" Foreground="#2196F3"/></StackPanel>
+                            </Border>
+                            <Border Grid.Column="1" Background="#FFEBEE" CornerRadius="10" Padding="15" Margin="5,0,5,0">
+                                <StackPanel><TextBlock Text="کل Miss" Foreground="#666"/><TextBlock Text="{Binding TotalMisses}" FontSize="22" FontWeight="Bold" Foreground="#F44336"/></StackPanel>
+                            </Border>
+                            <Border Grid.Column="2" Background="#E8F5E9" CornerRadius="10" Padding="15" Margin="5,0,5,0">
+                                <StackPanel><TextBlock Text="نرخ Hit" Foreground="#666"/><TextBlock Text="{Binding HitRate, StringFormat={}{0:F1}%}" FontSize="22" FontWeight="Bold" Foreground="#4CAF50"/></StackPanel>
+                            </Border>
+                            <Border Grid.Column="3" Background="#FFF3E0" CornerRadius="10" Padding="15" Margin="5,0,0,0">
+                                <StackPanel><TextBlock Text="میانگین تأخیر" Foreground="#666"/><TextBlock Text="{Binding AvgLatency, StringFormat={}{0:F1}}" FontSize="22" FontWeight="Bold" Foreground="#FF9800"/></StackPanel>
+                            </Border>
+                        </Grid>
+                        <!-- Chart -->
+                        <Border Grid.Row="1" Background="White" CornerRadius="10" Padding="10">
+                            <lvc:CartesianChart Series="{Binding ChartSeries}" XAxes="{Binding XAxes}" YAxes="{Binding YAxes}"/>
+                        </Border>
+                    </Grid>
+                </TabItem>
+                
+                <TabItem Header="📋 جزئیات">
+                    <DataGrid ItemsSource="{Binding Results}" IsReadOnly="True" AutoGenerateColumns="False">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="آدرس" Binding="{Binding AddressHex}" Width="120"/>
+                            <DataGridTextColumn Header="نوع" Binding="{Binding AccessType}" Width="80"/>
+                            <DataGridTextColumn Header="نتیجه" Binding="{Binding HitMissText}" Width="80"/>
+                            <DataGridTextColumn Header="سطح" Binding="{Binding HitLevel}" Width="60"/>
+                            <DataGridTextColumn Header="تأخیر" Binding="{Binding TotalLatency}" Width="80"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </TabItem>
+                
+                <TabItem Header="📝 گزارش">
+                    <Grid RowDefinitions="2*,*,Auto">
+                        <!-- Comparison chart -->
+                        <Border Grid.Row="0" Background="White" CornerRadius="10" Padding="10">
+                            <lvc:CartesianChart Series="{Binding ComparisonChartSeries}"
+                                                XAxes="{Binding ComparisonXAxes}"
+                                                YAxes="{Binding ComparisonYAxes}"/>
+                        </Border>
+
+                        <!-- Logs -->
+                        <Border Grid.Row="1" Background="#121212" CornerRadius="10" Padding="8">
+                            <ListBox ItemsSource="{Binding Logs}" Background="Transparent" Foreground="#00FF00"/>
+                        </Border>
+
+                        <!-- Policy description -->
+                        <Border Grid.Row="2" Background="#F5F5F5" CornerRadius="10" Padding="10">
+                            <TextBlock Text="{Binding PolicyDesc}" TextWrapping="Wrap"/>
+                        </Border>
+                    </Grid>
+                </TabItem>
+            </TabControl>
+        </Grid>
+    </Grid>
+</Window>

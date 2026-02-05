@@ -1,0 +1,24 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.2.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MemoryHierarchySimulator", "src\MemoryHierarchySimulator.csproj", "{32F731FA-9BFC-75E9-F27E-26ED41BF1DBF}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{32F731FA-9BFC-75E9-F27E-26ED41BF1DBF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{32F731FA-9BFC-75E9-F27E-26ED41BF1DBF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{32F731FA-9BFC-75E9-F27E-26ED41BF1DBF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{32F731FA-9BFC-75E9-F27E-26ED41BF1DBF}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {006131EC-1ED7-4058-8B3F-5A3D315BD101}
+	EndGlobalSection
+EndGlobal
